@@ -28,6 +28,7 @@ public class Chest : MonoBehaviour, IInteractable
 
         if (reward.rewardPrefab != null)
         {
+            this.gameObject.SetActive(false);
             Instantiate(reward.rewardPrefab, transform.position, Quaternion.identity);
         }
     }
