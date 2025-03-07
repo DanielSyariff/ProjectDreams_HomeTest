@@ -3,7 +3,8 @@ using UnityEngine;
 public class Chest : MonoBehaviour, IInteractable
 {
     [Header("Reward Settings")]
-    [SerializeField] private RewardData reward;  // Assign reward lewat Inspector
+    [SerializeField] private RewardData reward;
+    public RewardUIManager rewardUIManager;
 
     private bool isOpened = false;
 
@@ -26,10 +27,11 @@ public class Chest : MonoBehaviour, IInteractable
 
         ShowRewardUI();
 
-        if (reward.rewardPrefab != null)
+        if (reward.rewardPrefab != null && rewardUIManager != null)
         {
             this.gameObject.SetActive(false);
             Instantiate(reward.rewardPrefab, transform.position, Quaternion.identity);
+            rewardUIManager.ShowReward(reward);
         }
     }
 
