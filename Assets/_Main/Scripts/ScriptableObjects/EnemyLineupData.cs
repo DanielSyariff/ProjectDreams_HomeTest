@@ -1,10 +1,20 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Reward", menuName = "Rewards/Reward")]
-public class EnemyLineupData
+[CreateAssetMenu(fileName = "Enemy", menuName = "Enemies/Enemy")]
+
+[Serializable]
+public class Lineup
 {
-    [Header("Reward Info")]
+    public string name;
     public int maxHp;
     public int speed;
-    public Animation enemyAnimation;
+    public int damage;
+    public RuntimeAnimatorController animator;
+}
+public class EnemyLineupData : ScriptableObject
+{
+    [Header("Enemy Info")]
+    public List<Lineup> lineup;
 }

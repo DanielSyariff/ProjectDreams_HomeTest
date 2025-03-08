@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public WorldUIManager worldUIManager;
     [Header("Spawner Settings")]
     public List<GameObject> enemyPrefab;
     public Transform spawnArea;
@@ -16,10 +17,13 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnTimer += Time.deltaTime;
 
-        if (spawnTimer >= spawnInterval && currentEnemyCount < maxEnemies)
+        if (!worldUIManager.onPause)
         {
-            SpawnEnemy();
-            spawnTimer = 0f;
+            if (spawnTimer >= spawnInterval && currentEnemyCount < maxEnemies)
+            {
+                SpawnEnemy();
+                spawnTimer = 0f;
+            }
         }
     }
 

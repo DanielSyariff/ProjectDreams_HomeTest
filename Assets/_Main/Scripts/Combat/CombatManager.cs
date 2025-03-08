@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class CombatManager : MonoBehaviour
 {
     [Header("Combat Settings")]
+    public EnemyLineupData lineUpData;
     public List<Character> players;
     public List<Character> enemies;
 
@@ -19,7 +21,29 @@ public class CombatManager : MonoBehaviour
 
     void StartCombat()
     {
-        // Urutkan turn berdasarkan speed
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].SetupData(lineUpData.lineup[i].name, lineUpData.lineup[i].maxHp, lineUpData.lineup[i].speed, lineUpData.lineup[i].damage, lineUpData.lineup[i].animator);
+        }
+
+        Debug.Log("Bonus Combat : " + PlayerPrefs.GetInt("BonusCombat"));
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (PlayerPrefs.GetInt("BonusCombat") == 0) //Normal
+            {
+                players[i].SetupBonusData(1, 1);
+            }
+            else if (PlayerPrefs.GetInt("BonusCombat") == 1) //Advantage
+            {
+                players[i].SetupBonusData(1, 1.5f);
+            }
+            else //Ambush
+            {
+                players[i].SetupBonusData(1, 0.5f);
+            }
+        }
+
         turnOrder = new List<Character>();
         turnOrder.AddRange(players);
         turnOrder.AddRange(enemies);
@@ -54,25 +78,54 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    IEnumerator<WaitForSeconds> EnemyTurn(Character enemy)
+    IEnumerator EnemyTurn(Character enemy)
     {
         yield return new WaitForSeconds(1f);
-        enemy.Attack(players[Random.Range(0, players.Count)]);
+
+        if (players.Count > 0)
+        {
+            Character target = players[Random.Range(0, players.Count)];
+            enemy.Attack(target);
+        }
+
         turnIndex++;
         NextTurn();
     }
 
-    public void PlayerAction(string action)
+    public void PlayerPrepareAction(string action, bool isMultipleTarget)
     {
         Character player = turnOrder[turnIndex];
+
+        uiManager.HideActionPanel();
+        if (isMultipleTarget)
+        {
+            uiManager.ShowTargetSelection(enemies, true);
+        }
+        else
+        {
+            uiManager.ShowTargetSelection(enemies, false);
+        }
+    }
+
+    public void PlayerAction(string action, List<Character> targets)
+    {
+        Character player = turnOrder[turnIndex];
+
+        if (targets == null || targets.Count == 0) return;
 
         switch (action)
         {
             case "Attack":
-                player.Attack(enemies[0]); // Serang musuh pertama
+                foreach (Character target in targets)
+                {
+                    player.Attack(target);
+                }
                 break;
             case "Spell":
-                player.CastSpell(enemies[0]);
+                foreach (Character target in targets)
+                {
+                    player.CastSpell(target);
+                }
                 break;
             case "Defend":
                 player.Defend();

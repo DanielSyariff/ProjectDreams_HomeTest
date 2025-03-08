@@ -1,13 +1,20 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject actionPanel;
+    public GameObject targetSelectionPanel;
     public GameObject gameOverPanel;
     public TextMeshProUGUI gameOverText;
+
+    public CombatManager combatManager;
+
+    public GameObject enemyButtonPrefab;
+    private string currentAction;
+    private bool isMultipleTarget;
 
     public void ShowActionPanel()
     {
@@ -17,6 +24,38 @@ public class UIManager : MonoBehaviour
     public void HideActionPanel()
     {
         actionPanel.SetActive(false);
+    }
+
+    public void ShowTargetSelection(List<Character> enemies, bool multiple)
+    {
+        targetSelectionPanel.SetActive(true);
+        ClearTargetButtons();
+
+        isMultipleTarget = multiple;
+
+        foreach (Character enemy in enemies)
+        {
+            if (enemy.gameObject.activeInHierarchy)
+            {
+                GameObject buttonObj = Instantiate(enemyButtonPrefab, targetSelectionPanel.transform);
+                buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = enemy.characterName;
+                //buttonObj.GetComponentInChildren<Text>().text = enemy.characterName;
+                buttonObj.GetComponent<Button>().onClick.AddListener(() => SelectTarget(new List<Character> { enemy }));
+            }
+        }
+
+        if (multiple)
+        {
+            GameObject allEnemiesButton = Instantiate(enemyButtonPrefab, targetSelectionPanel.transform);
+            allEnemiesButton.GetComponentInChildren<TextMeshProUGUI>().text = "ALL ENEMY";
+            //allEnemiesButton.GetComponentInChildren<Text>().text = "All Enemies";
+            allEnemiesButton.GetComponent<Button>().onClick.AddListener(() => SelectTarget(enemies));
+        }
+    }
+
+    public void HideTargetSelection()
+    {
+        targetSelectionPanel.SetActive(false);
     }
 
     public void ShowGameOver(string message)
@@ -30,13 +69,39 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
     }
 
-    public void OnRetryButton()
+    public void OnAttackButton()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        currentAction = "Attack";
+        combatManager.PlayerPrepareAction(currentAction, false);
     }
 
-    public void OnQuitButton()
+    public void OnSpellButton()
     {
-        Application.Quit();
+        currentAction = "Spell";
+        combatManager.PlayerPrepareAction(currentAction, true);
+    }
+
+    public void OnDefendButton()
+    {
+        combatManager.PlayerAction("Defend", combatManager.players);
+    }
+
+    public void OnRunButton()
+    {
+        combatManager.PlayerAction("Run", combatManager.players);
+    }
+
+    private void SelectTarget(List<Character> targets)
+    {
+        combatManager.PlayerAction(currentAction, targets);
+        HideTargetSelection();
+    }
+
+    private void ClearTargetButtons()
+    {
+        foreach (Transform child in targetSelectionPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

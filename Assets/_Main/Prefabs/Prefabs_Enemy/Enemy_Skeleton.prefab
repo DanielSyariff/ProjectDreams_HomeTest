@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 6902689443597653146}
   - component: {fileID: 1679261002171138981}
   - component: {fileID: 8819943328636255912}
-  m_Layer: 0
+  - component: {fileID: 518045232190923578}
+  - component: {fileID: 8202090879510166267}
+  m_Layer: 8
   m_Name: Enemy_Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +50,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnArea: {fileID: 0}
   patrolRange: 5
-  patrolSpeed: 2
+  patrolSpeed: 0
   waitTime: 5
-  visionRange: 3
+  visionRange: 2.5
   attackRange: 1.5
   playerLayer:
     serializedVersion: 2
@@ -69,11 +71,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606b700df7963634b9f5d09bbd05467d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldUIManager: {fileID: 0}
   normalCombatSpeed: 1
   advantageCombatSpeed: 1.5
   ambushCombatSpeed: 0.5
   initialAdvantageDamage: 10
   initialAmbushDamage: 10
+--- !u!114 &518045232190923578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2519123728717801902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb7613a4ff37164b8fb55290d417de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: CombatScene
+  loadAdditively: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!70 &8202090879510166267
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2519123728717801902}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.28372228, y: 0.03067255}
+  m_Size: {x: 1.0674446, y: 2.5029616}
+  m_Direction: 0
 --- !u!1 &5346533805154752547
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +142,7 @@ GameObject:
   - component: {fileID: 7253343558321269322}
   - component: {fileID: 925243425455788679}
   - component: {fileID: 7306909433087833270}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Idle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

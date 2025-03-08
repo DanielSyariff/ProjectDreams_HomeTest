@@ -84,15 +84,18 @@ public class Enemy : MonoBehaviour
     {
         if (player == null) return;
 
-        // Kejar Player
-        transform.position = Vector2.MoveTowards(transform.position, player.position, patrolSpeed * 1.5f * Time.deltaTime);
-
-        // Flip arah saat ngejar Player
-        FlipDirection(player.position - transform.position);
-
-        if (Vector2.Distance(transform.position, player.position) <= attackRange)
+        if (!WorldUIManager.instance.onPause)
         {
-            AttackPlayer();
+            // Kejar Player
+            transform.position = Vector2.MoveTowards(transform.position, player.position, patrolSpeed * 1.5f * Time.deltaTime);
+
+            // Flip arah saat ngejar Player
+            FlipDirection(player.position - transform.position);
+
+            if (Vector2.Distance(transform.position, player.position) <= attackRange)
+            {
+                AttackPlayer();
+            }
         }
     }
     #endregion
@@ -106,7 +109,7 @@ public class Enemy : MonoBehaviour
             EnemyCombatTrigger combatTrigger = GetComponent<EnemyCombatTrigger>();
             if (combatTrigger != null)
             {
-                combatTrigger.TriggerCombat(player);
+                combatTrigger.TriggerCombat(this.transform);
             }
 
             Debug.Log("Enemy attacked the player!");
