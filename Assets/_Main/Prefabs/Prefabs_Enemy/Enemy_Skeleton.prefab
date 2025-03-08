@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnArea: {fileID: 0}
   patrolRange: 5
-  patrolSpeed: 0
+  patrolSpeed: 1
   waitTime: 5
   visionRange: 2.5
   attackRange: 1.5
@@ -128,8 +128,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.28372228, y: 0.03067255}
-  m_Size: {x: 1.0674446, y: 2.5029616}
+  m_Offset: {x: 0.22237694, y: -0.04295957}
+  m_Size: {x: 0.54600906, y: 1.0674446}
   m_Direction: 0
 --- !u!1 &5346533805154752547
 GameObject:

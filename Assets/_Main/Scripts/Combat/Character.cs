@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class Character : MonoBehaviour
 {
@@ -49,13 +50,31 @@ public class Character : MonoBehaviour
         Debug.Log($"{characterName} is defending!");
     }
 
+    SpriteRenderer spriteRenderer;
     public void TakeDamage(int amount)
     {
         currentHP -= amount;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.DOFade(0, 0.1f).SetLoops(6, LoopType.Yoyo).OnComplete(() =>
+            {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1);
+            });
+        }
+
         if (isDead)
         {
             Debug.Log($"{characterName} has died.");
             this.gameObject.SetActive(false);
         }
     }
+
 }

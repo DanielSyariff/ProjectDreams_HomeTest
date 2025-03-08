@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject actionPanel;
     public GameObject targetSelectionPanel;
     public GameObject gameOverPanel;
+    public GameObject losePanel;
     public TextMeshProUGUI gameOverText;
 
     public CombatManager combatManager;
@@ -24,6 +26,11 @@ public class UIManager : MonoBehaviour
     public void HideActionPanel()
     {
         actionPanel.SetActive(false);
+    }
+
+    public void ShowLosePanelButton()
+    {
+        losePanel.SetActive(true);
     }
 
     public void ShowTargetSelection(List<Character> enemies, bool multiple)
@@ -72,13 +79,13 @@ public class UIManager : MonoBehaviour
     public void OnAttackButton()
     {
         currentAction = "Attack";
-        combatManager.PlayerPrepareAction(currentAction, false);
+        combatManager.PlayerPrepareAction(false);
     }
 
     public void OnSpellButton()
     {
         currentAction = "Spell";
-        combatManager.PlayerPrepareAction(currentAction, true);
+        combatManager.PlayerPrepareAction(true);
     }
 
     public void OnDefendButton()
@@ -103,5 +110,14 @@ public class UIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void GoToExploring()
+    {
+        SceneManager.LoadScene("WorldScene", LoadSceneMode.Single);
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

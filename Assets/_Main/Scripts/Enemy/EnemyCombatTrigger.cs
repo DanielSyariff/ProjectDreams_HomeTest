@@ -35,7 +35,7 @@ public class EnemyCombatTrigger : MonoBehaviour
             }
             else
             {
-                AmbushCombat(); // Serangan dari samping
+                NormalCombat(); // Serangan dari samping
             }
         }
         else

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class CombatManager : MonoBehaviour
 {
@@ -30,17 +31,18 @@ public class CombatManager : MonoBehaviour
 
         for (int i = 0; i < players.Count; i++)
         {
-            if (PlayerPrefs.GetInt("BonusCombat") == 0) //Normal
+            if (PlayerPrefs.GetInt("BonusCombat") == 0) // Normal
             {
                 players[i].SetupBonusData(1, 1);
             }
-            else if (PlayerPrefs.GetInt("BonusCombat") == 1) //Advantage
+            else if (PlayerPrefs.GetInt("BonusCombat") == 1) // Advantage
             {
                 players[i].SetupBonusData(1, 1.5f);
             }
-            else //Ambush
+            else // Ambush
             {
                 players[i].SetupBonusData(1, 0.5f);
+                uiManager.HideActionPanel();
             }
         }
 
@@ -78,6 +80,12 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    IEnumerator BackToExploringScene()
+    {
+        yield return new WaitForSeconds(2f);
+        uiManager.GoToExploring();
+    }
+
     IEnumerator EnemyTurn(Character enemy)
     {
         yield return new WaitForSeconds(1f);
@@ -85,14 +93,39 @@ public class CombatManager : MonoBehaviour
         if (players.Count > 0)
         {
             Character target = players[Random.Range(0, players.Count)];
-            enemy.Attack(target);
+            MoveToPlayerAndAttack(enemy, target); // Panggil fungsi gerakan ke player
         }
-
-        turnIndex++;
-        NextTurn();
+        else
+        {
+            turnIndex++;
+            NextTurn();
+        }
     }
 
-    public void PlayerPrepareAction(string action, bool isMultipleTarget)
+    void MoveToPlayerAndAttack(Character enemy, Character target)
+    {
+        Vector3 initialPosition = enemy.transform.position;
+
+        // Hitung arah maju ke player
+        Vector3 directionToPlayer = (target.transform.position - enemy.transform.position).normalized;
+        Vector3 attackPosition = target.transform.position - directionToPlayer * 1.5f;
+
+        // Gerakkan enemy ke posisi serang
+        enemy.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            enemy.Attack(target);
+
+            // Kembali ke posisi awal setelah menyerang
+            enemy.transform.DOMove(initialPosition, 0.5f).SetEase(Ease.InQuad).OnComplete(() =>
+            {
+                turnIndex++;
+                NextTurn();
+            });
+        });
+    }
+
+
+    public void PlayerPrepareAction(bool isMultipleTarget)
     {
         Character player = turnOrder[turnIndex];
 
@@ -118,38 +151,72 @@ public class CombatManager : MonoBehaviour
             case "Attack":
                 foreach (Character target in targets)
                 {
-                    player.Attack(target);
+                    MoveToEnemyAndAttack(player, target);
                 }
                 break;
             case "Spell":
                 foreach (Character target in targets)
                 {
-                    player.CastSpell(target);
+                    player.transform.DOShakePosition(0.5f, 0.3f, 10, 90, false, true).OnComplete(() =>
+                    {
+                        player.CastSpell(target);
+                    });
                 }
+
+                turnIndex++;
+                uiManager.HideActionPanel();
+                NextTurn();
+
                 break;
             case "Defend":
                 player.Defend();
+                turnIndex++;
+                uiManager.HideActionPanel();
+                NextTurn();
                 break;
             case "Run":
                 uiManager.ShowGameOver("You ran away!");
                 return;
         }
-
-        turnIndex++;
-        uiManager.HideActionPanel();
-        NextTurn();
     }
+
+    void MoveToEnemyAndAttack(Character player, Character target)
+    {
+        Vector3 initialPosition = player.transform.position;
+        Vector3 attackPosition = target.transform.position + (player.transform.position - target.transform.position).normalized * 1.5f;
+
+        player.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            player.Attack(target);
+
+            player.transform.DOMove(initialPosition, 0.5f).SetEase(Ease.InQuad).OnComplete(() =>
+            {
+                turnIndex++;
+                uiManager.HideActionPanel();
+                NextTurn();
+            });
+        });
+    }
+
+    void MoveToEnemyAndCastSpell(Character player, Character target)
+    {
+        // Efek bergetar saat cast spell
+        
+    }
+
 
     bool CheckVictory()
     {
         if (enemies.TrueForAll(e => e.isDead))
         {
             uiManager.ShowGameOver("You won!");
+            StartCoroutine(BackToExploringScene());
             return true;
         }
         else if (players.TrueForAll(p => p.isDead))
         {
             uiManager.ShowGameOver("You lost...");
+            uiManager.ShowLosePanelButton();
             return true;
         }
         return false;
