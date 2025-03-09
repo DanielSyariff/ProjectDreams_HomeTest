@@ -17,6 +17,7 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
+        AudioManager.instance.BattleMusic();
         StartCombat();
     }
 
@@ -83,6 +84,7 @@ public class CombatManager : MonoBehaviour
     IEnumerator BackToExploringScene()
     {
         yield return new WaitForSeconds(2f);
+        AudioManager.instance.WorldMusic();
         uiManager.GoToExploring();
     }
 
@@ -176,6 +178,7 @@ public class CombatManager : MonoBehaviour
                 break;
             case "Run":
                 uiManager.ShowGameOver("You ran away!");
+                StartCoroutine(BackToExploringScene());
                 return;
         }
     }
