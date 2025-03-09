@@ -95,7 +95,7 @@ public class CombatManager : MonoBehaviour
         if (players.Count > 0)
         {
             Character target = players[Random.Range(0, players.Count)];
-            MoveToPlayerAndAttack(enemy, target); // Panggil fungsi gerakan ke player
+            MoveToPlayerAndAttack(enemy, target);
         }
         else
         {
@@ -108,16 +108,13 @@ public class CombatManager : MonoBehaviour
     {
         Vector3 initialPosition = enemy.transform.position;
 
-        // Hitung arah maju ke player
         Vector3 directionToPlayer = (target.transform.position - enemy.transform.position).normalized;
         Vector3 attackPosition = target.transform.position - directionToPlayer * 1.5f;
 
-        // Gerakkan enemy ke posisi serang
         enemy.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             enemy.Attack(target);
 
-            // Kembali ke posisi awal setelah menyerang
             enemy.transform.DOMove(initialPosition, 0.5f).SetEase(Ease.InQuad).OnComplete(() =>
             {
                 turnIndex++;
@@ -200,13 +197,6 @@ public class CombatManager : MonoBehaviour
             });
         });
     }
-
-    void MoveToEnemyAndCastSpell(Character player, Character target)
-    {
-        // Efek bergetar saat cast spell
-        
-    }
-
 
     bool CheckVictory()
     {

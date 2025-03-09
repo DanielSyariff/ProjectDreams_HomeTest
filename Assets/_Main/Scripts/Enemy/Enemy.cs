@@ -49,7 +49,6 @@ public class Enemy : MonoBehaviour
     {
         transform.position = Vector2.MoveTowards(transform.position, targetPoint, patrolSpeed * Time.deltaTime);
 
-        // Flip arah saat patrol
         FlipDirection(targetPoint - (Vector2)transform.position);
 
         if (Vector2.Distance(transform.position, targetPoint) < 0.1f)
@@ -86,10 +85,8 @@ public class Enemy : MonoBehaviour
 
         if (!WorldUIManager.instance.onPause)
         {
-            // Kejar Player
             transform.position = Vector2.MoveTowards(transform.position, player.position, patrolSpeed * 1.5f * Time.deltaTime);
 
-            // Flip arah saat ngejar Player
             FlipDirection(player.position - transform.position);
 
             if (Vector2.Distance(transform.position, player.position) <= attackRange)
@@ -105,7 +102,6 @@ public class Enemy : MonoBehaviour
     {
         if (attackTimer <= 0)
         {
-            // Trigger Combat Mode
             EnemyCombatTrigger combatTrigger = GetComponent<EnemyCombatTrigger>();
             if (combatTrigger != null)
             {
@@ -139,7 +135,6 @@ public class Enemy : MonoBehaviour
     #region Flip Logic
     private void FlipDirection(Vector2 direction)
     {
-        // Kalau ke kanan, flipX = false, kalau ke kiri flipX = true
         spriteRenderer.flipX = direction.x < 0;
     }
     #endregion

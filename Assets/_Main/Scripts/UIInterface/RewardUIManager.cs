@@ -4,8 +4,8 @@ using TMPro;
 
 public class RewardUIManager : MonoBehaviour
 {
-    public GameObject rewardItemPrefab;  // Prefab reward UI
-    public Transform rewardPanel;        // Tempat spawn reward UI
+    public GameObject rewardItemPrefab;  
+    public Transform rewardPanel;        
 
     public void ShowReward(RewardData rewardData)
     {

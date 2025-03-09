@@ -35,11 +35,7 @@ public class AudioManager : MonoBehaviour
     {
         bgmSource.Stop();
     }
-    //public void ChangeBGM(AudioClip newBGM)
-    //{
-    //    StopBGM();
-    //    PlayBGM(newBGM);
-    //}
+
     public void WorldMusic()
     {
         StopBGM();

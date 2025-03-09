@@ -20,27 +20,26 @@ public class EnemyCombatTrigger : MonoBehaviour
     {
         Vector2 directionToAttacker = (attacker.position - transform.position).normalized;
 
-        // Cek apakah serangan datang dari Player layer
         if (attacker.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             float angleToAttacker = Vector2.Angle(transform.right, directionToAttacker);
 
+            //Need to Fix
             if (angleToAttacker < 45f)
             {
-                NormalCombat(); // Serangan depan
+                NormalCombat();
             }
             else if (angleToAttacker > 135f)
             {
-                AdvantageCombat(); // Serangan belakang
+                AdvantageCombat();
             }
             else
             {
-                NormalCombat(); // Serangan dari samping
+                NormalCombat();
             }
         }
         else
         {
-            // Kalau layer bukan Player, langsung Ambush
             AmbushCombat();
         }
     }
@@ -52,7 +51,7 @@ public class EnemyCombatTrigger : MonoBehaviour
         Vector2 directionToEnemy = (transform.position - player.position).normalized;
 
         float dotProduct = Vector2.Dot(playerForward, directionToEnemy);
-        return dotProduct > 0.5f; // Menghadapi musuh
+        return dotProduct > 0.5f;
     }
 
     private void NormalCombat()

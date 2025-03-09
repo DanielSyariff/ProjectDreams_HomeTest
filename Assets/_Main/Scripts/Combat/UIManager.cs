@@ -46,7 +46,6 @@ public class UIManager : MonoBehaviour
             {
                 GameObject buttonObj = Instantiate(enemyButtonPrefab, targetSelectionPanel.transform);
                 buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = enemy.characterName;
-                //buttonObj.GetComponentInChildren<Text>().text = enemy.characterName;
                 buttonObj.GetComponent<Button>().onClick.AddListener(() => SelectTarget(new List<Character> { enemy }));
             }
         }
@@ -54,8 +53,7 @@ public class UIManager : MonoBehaviour
         if (multiple)
         {
             GameObject allEnemiesButton = Instantiate(enemyButtonPrefab, targetSelectionPanel.transform);
-            allEnemiesButton.GetComponentInChildren<TextMeshProUGUI>().text = "ALL ENEMY";
-            //allEnemiesButton.GetComponentInChildren<Text>().text = "All Enemies";
+            allEnemiesButton.GetComponentInChildren<TextMeshProUGUI>().text = "ALL";
             allEnemiesButton.GetComponent<Button>().onClick.AddListener(() => SelectTarget(enemies));
         }
     }

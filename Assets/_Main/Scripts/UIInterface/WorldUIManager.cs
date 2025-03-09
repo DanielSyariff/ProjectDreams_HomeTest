@@ -12,8 +12,8 @@ public class WorldUIManager : MonoBehaviour
     public TextMeshProUGUI combatText;
 
     public float slideDuration = 0.5f;
-    public float startXOffset = -800f; // Posisi awal di luar layar
-    public float endXPosition = 0f;    // Posisi akhir (di tengah layar)
+    public float startXOffset = -800f; 
+    public float endXPosition = 0f;    
 
     private void Awake()
     {

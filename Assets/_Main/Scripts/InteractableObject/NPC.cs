@@ -4,14 +4,14 @@ using TMPro;
 public class NPC : MonoBehaviour, IInteractable
 {
     [Header("Bubble Settings")]
-    public GameObject bubbleTextPrefab;             // Prefab untuk Bubble Text
-    public Transform bubblePosition;               // Posisi Bubble (biasanya di atas kepala NPC)
-    public float detectionRange = 3f;              // Jarak deteksi player
-    public LayerMask playerLayer;                  // Layer untuk player
-    public string npcMessage = "Hello! Press [E] to talk."; // Pesan default NPC
+    public GameObject bubbleTextPrefab;             
+    public Transform bubblePosition;               
+    public float detectionRange = 3f;              
+    public LayerMask playerLayer;                  
+    public string npcMessage = "Hello! Press [E] to talk."; 
 
     [Header("Interaction Settings")]
-    public bool canInteract = true;                // Apakah NPC bisa diinteraksi
+    public bool canInteract = true;                
 
     private GameObject currentBubble;
 

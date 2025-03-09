@@ -71,7 +71,6 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 direction = movementInput.normalized;
 
-            // Atur posisi AttackPoint berdasarkan arah gerakan
             attackPoint.localPosition = new Vector2(direction.x, direction.y) * 1f; // Atur jarak offset
         }
     }

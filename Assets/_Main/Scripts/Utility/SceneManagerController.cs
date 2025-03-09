@@ -18,20 +18,15 @@ public class SceneManagerController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    // Fungsi untuk pindah ke scene tertentu (Single Mode)
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
-    // Fungsi untuk load scene secara Additive
     public void LoadSceneAdditive(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
-
-    // Fungsi untuk unload scene yang tidak dibutuhkan
     public void UnloadScene(string sceneName)
     {
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
@@ -43,14 +38,11 @@ public class SceneManagerController : MonoBehaviour
             Debug.LogWarning($"Scene '{sceneName}' belum diload.");
         }
     }
-
-    // Fungsi untuk reload scene saat ini
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // Fungsi untuk pindah ke scene berikutnya
     public void LoadNextScene()
     {
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
@@ -64,7 +56,6 @@ public class SceneManagerController : MonoBehaviour
         }
     }
 
-    // Fungsi untuk keluar dari game
     public void QuitGame()
     {
         Debug.Log("Keluar dari game...");
