@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineup:
   - name: Skeleton
-    maxHp: 100
+    maxHp: 50
     speed: 2
     damage: 5
     animator: {fileID: 9100000, guid: 29bbe4ed47a58864392d2e2487c55005, type: 2}
   - name: Skeleton
-    maxHp: 100
+    maxHp: 50
     speed: 2
     damage: 5
     animator: {fileID: 9100000, guid: 29bbe4ed47a58864392d2e2487c55005, type: 2}
   - name: Goblin
-    maxHp: 50
+    maxHp: 30
     speed: 3
     damage: 3
     animator: {fileID: 9100000, guid: 8cc585597994b8842903c2a8e424b3d9, type: 2}
